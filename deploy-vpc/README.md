@@ -6,8 +6,8 @@ NOTE:
 As shown below, this terraform template will create new EIPs and destroy them when the "terraform destroy" command is used. In other to persit EIPs in
 cases where the Ip addresses need to be whitelisted
 1. Simply pre-assign the ip addresses in the AWS account
-2. Assign the ip and the allocation ID as shown in lines 27 and line 28 and uncomment them
-3. Comment out line 29 and line 38-42
+2. Assign the ip and the allocation ID as shown below on the variables "external_nat_ips" and "external_nat_ip_ids" and uncomment
+3. Comment out  external_nat_ip_ids = "${aws_eip.nat.*.id}" 
 
 # AWS VPC Terraform module
 
@@ -17,7 +17,7 @@ Terraform module which creates VPC resources on AWS.
 
 ```hcl
 module "vpc" {
-  source = "terraform-aws-modules/vpc/aws"
+  source = "../module/module_vpc"
 
   name = "vpc-use1-dev-ixbp"
   cidr = "10.209.64.0/23"
@@ -101,7 +101,7 @@ If both `single_nat_gateway` and `one_nat_gateway_per_az` are set to `true`, the
 
 ### One NAT Gateway per subnet (default)
 
-By default, the module will determine the number of NAT Gateways to create based on the the `max()` of the private subnet lists (`database_subnets`, `elasticache_subnets`, `private_subnets`, and `redshift_subnets`). The module **does not** take into account the number of `intra_subnets`, since the latter are designed to have no Internet access via NAT Gateway. For example, if your configuration looks like the following:
+By default, the module will determine the number of NAT Gateways to create based on the the `max()` of the private subnet 
 
 
 ## VPC Flow Log
